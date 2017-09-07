@@ -31,6 +31,24 @@ For this question, one will not only want to see the number of homeruns and the 
 Here is the query line used to find the answer to Question 1.
 
 ```{r}
-query<- "SELECT playerID,teamID,yearID,HR FROM Batting
+query<-"SELECT playerID,teamID,yearID,HR from Batting
 WHERE teamID='NYA' and HR>=40"
 sqldf(query)
+```
+
+Question 2: Find an instance where a player had more than 40 homeruns but less than 60 strikeouts.
+
+```{r}
+query<-"SELECT playerID,teamID,yearID,HR,SO from Batting
+WHERE HR>40 and SO<60"
+sqldf(query)
+```
+
+Question 3: Find all instances of Phillies in the 1970s hitting more than 30 homeruns.
+
+```{r}
+query<-"SELECT playerID, teamID, yearID, HR FROM Batting
+WHERE teamID='PHI'and yearID>1970 and yearID<=1979 and HR>30"
+sqldf(query)
+```
+

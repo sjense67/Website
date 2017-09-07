@@ -156,7 +156,91 @@ sqldf(query)</code></pre>
 ## 23 shockur01    NYA   1927  0
 ## 24 thomamy01    NYA   1927  0
 ## 25  weraju01    NYA   1927  1</code></pre>
-<p>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</p>
+<p>One can also get more selective with the data, using the same filters. Following are some more specific questions within the Batting table of the Lahman database, the queries used to find the answers, and the answers themselves.</p>
+<p>Question 1: Find all instances where Yankees have hit 40 or more home runs.</p>
+<p>For this question, one will not only want to see the number of homeruns and the team, but most likely the player and the year as well. Additionally, instead of using an equals sign in the WHERE clause, one can use greater or less than signs as well to narrow or broaden searches.</p>
+<p>Here is the query line used to find the answer to Question 1.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,teamID,yearID,HR from Batting
+WHERE teamID='NYA' and HR&gt;=40&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID teamID yearID HR
+## 1   ruthba01    NYA   1920 54
+## 2   ruthba01    NYA   1921 59
+## 3   ruthba01    NYA   1923 41
+## 4   ruthba01    NYA   1924 46
+## 5   ruthba01    NYA   1926 47
+## 6  gehrilo01    NYA   1927 47
+## 7   ruthba01    NYA   1927 60
+## 8   ruthba01    NYA   1928 54
+## 9   ruthba01    NYA   1929 46
+## 10 gehrilo01    NYA   1930 41
+## 11  ruthba01    NYA   1930 49
+## 12 gehrilo01    NYA   1931 46
+## 13  ruthba01    NYA   1931 46
+## 14  ruthba01    NYA   1932 41
+## 15 gehrilo01    NYA   1934 49
+## 16 gehrilo01    NYA   1936 49
+## 17 dimagjo01    NYA   1937 46
+## 18 mantlmi01    NYA   1956 52
+## 19 mantlmi01    NYA   1958 42
+## 20 mantlmi01    NYA   1960 40
+## 21 mantlmi01    NYA   1961 54
+## 22 marisro01    NYA   1961 61
+## 23 jacksre01    NYA   1980 41
+## 24 martiti02    NYA   1997 44
+## 25 giambja01    NYA   2002 41
+## 26 giambja01    NYA   2003 41
+## 27 rodrial01    NYA   2005 48
+## 28 rodrial01    NYA   2007 54
+## 29 grandcu01    NYA   2011 41
+## 30 grandcu01    NYA   2012 43</code></pre>
+<p>Question 2: Find an instance where a player had more than 40 homeruns but less than 60 strikeouts.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,teamID,yearID,HR,SO from Batting
+WHERE HR&gt;40 and SO&lt;60&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID teamID yearID HR SO
+## 1  hornsro01    SLN   1922 42 50
+## 2  willicy01    PHI   1923 41 57
+## 3    ottme01    NY1   1929 42 38
+## 4  gehrilo01    NYA   1931 46 56
+## 5   ruthba01    NYA   1931 46 51
+## 6  gehrilo01    NYA   1934 49 31
+## 7  gehrilo01    NYA   1936 49 46
+## 8  troskha01    CLE   1936 42 58
+## 9  dimagjo01    NYA   1937 46 37
+## 10  mizejo01    SLN   1940 43 49
+## 11  mizejo01    NY1   1947 51 42
+## 12 willite01    BOS   1949 43 48
+## 13 kinerra01    PIT   1951 42 57
+## 14 camparo01    BRO   1953 41 58
+## 15 rosenal01    CLE   1953 43 48
+## 16 kluszte01    CIN   1954 49 35
+## 17  mayswi01    NY1   1954 41 57
+## 18 kluszte01    CIN   1955 47 40
+## 19 aaronha01    ML1   1957 44 58
+## 20 sievero01    WS1   1957 42 55
+## 21 aaronha01    ATL   1969 44 47
+## 22 aaronha01    ATL   1971 47 58
+## 23 thomafr04    CHA   1993 41 54
+## 24 bondsba01    SFN   2002 46 47
+## 25 bondsba01    SFN   2003 45 58
+## 26 bondsba01    SFN   2004 45 41
+## 27 pujolal01    SLN   2004 46 52
+## 28 pujolal01    SLN   2006 49 50</code></pre>
+<p>Question 3: Find all instances of Phillies in the 1970s hitting more than 30 homeruns.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID, teamID, yearID, HR FROM Batting
+WHERE teamID='PHI'and yearID&gt;1970 and yearID&lt;=1979 and HR&gt;30&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID teamID yearID HR
+## 1 johnsde01    PHI   1971 34
+## 2 schmimi01    PHI   1974 36
+## 3 luzingr01    PHI   1975 34
+## 4 schmimi01    PHI   1975 38
+## 5 schmimi01    PHI   1976 38
+## 6 luzingr01    PHI   1977 39
+## 7 schmimi01    PHI   1977 38
+## 8 luzingr01    PHI   1978 35
+## 9 schmimi01    PHI   1979 45</code></pre>
 </div>
 
 
