@@ -22,5 +22,15 @@ WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
 
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+One can also get more selective with the data, using the same filters. Following are some more specific questions within the Batting table of the Lahman database, the queries used to find the answers, and the answers themselves.
 
+Question 1: Find all instances where Yankees have hit 40 or more home runs.
+
+For this question, one will not only want to see the number of homeruns and the team, but most likely the player and the year as well. Additionally, instead of using an equals sign in the WHERE clause, one can use greater or less than signs as well to narrow or broaden searches. 
+
+Here is the query line used to find the answer to Question 1.
+
+```{r}
+query<- "SELECT playerID,teamID,yearID,HR FROM Batting
+WHERE teamID='NYA' and HR>=40"
+sqldf(query)
