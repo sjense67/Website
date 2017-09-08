@@ -5,7 +5,7 @@ output: html_document
 
 ##Filtering Columns and Rows
 
-In SQL one can filter columns and rows of a selected table. Columns can be filtered using the SELECT command and rows can be filtered using the WHERE command. Following is an example of this using the Lahman basaeball database.
+In SQL one can filter columns and rows of a selected table. Columns can be filtered using the SELECT command and rows can be filtered using the WHERE command. Following is an example of this using the Lahman baseball database.
 
 Before the tables can be filtered, the Lahman and sqldf packages need to be loaded.
 
@@ -23,6 +23,8 @@ sqldf(query)
 ```
 
 One can also get more selective with the data, using the same filters. Following are some more specific questions within the Batting table of the Lahman database, the queries used to find the answers, and the answers themselves.
+
+####Examples
 
 Question 1: Find all instances where Yankees have hit 40 or more home runs.
 
@@ -49,6 +51,17 @@ Question 3: Find all instances of Phillies in the 1970s hitting more than 30 hom
 ```{r}
 query<-"SELECT playerID, teamID, yearID, HR FROM Batting
 WHERE teamID='PHI'and yearID>1970 and yearID<=1979 and HR>30"
+sqldf(query)
+```
+
+Question 4: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.
+
+To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.
+
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE HR>50
+ORDER BY HR DESC"
 sqldf(query)
 ```
 
