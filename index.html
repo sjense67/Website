@@ -122,7 +122,7 @@ $(document).ready(function () {
 
 <div id="filtering-columns-and-rows" class="section level2">
 <h2>Filtering Columns and Rows</h2>
-<p>In SQL one can filter columns and rows of a selected table. Columns can be filtered using the SELECT command and rows can be filtered using the WHERE command. Following is an example of this using the Lahman basaeball database.</p>
+<p>In SQL one can filter columns and rows of a selected table. Columns can be filtered using the SELECT command and rows can be filtered using the WHERE command. Following is an example of this using the Lahman baseball database.</p>
 <p>Before the tables can be filtered, the Lahman and sqldf packages need to be loaded.</p>
 <pre class="r"><code>library(Lahman)
 library(sqldf)</code></pre>
@@ -243,8 +243,14 @@ sqldf(query)</code></pre>
 ## 7 schmimi01    PHI   1977 38
 ## 8 luzingr01    PHI   1978 35
 ## 9 schmimi01    PHI   1979 45</code></pre>
-<p>Question 4: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.</p>
-<p>To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.</p>
+</div>
+</div>
+<div id="ordering-data-outputs" class="section level2">
+<h2>Ordering Data Outputs</h2>
+<p>One can also order output. To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.</p>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Question 1: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE HR&gt;50
 ORDER BY HR DESC&quot;

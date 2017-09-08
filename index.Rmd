@@ -58,7 +58,9 @@ sqldf(query)
 
 One can also order output. To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.
 
-Question 4: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.
+####Example
+
+Question 1: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.
 
 ```{r}
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting
