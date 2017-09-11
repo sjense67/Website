@@ -58,7 +58,7 @@ sqldf(query)
 
 One can also order output. To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.
 
-####Example
+####Examples
 
 Question 1: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.
 
@@ -66,6 +66,55 @@ Question 1: Find every instance of a player hitting more than 50 homeruns, order
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE HR>50
 ORDER BY HR DESC"
+sqldf(query)
+```
+
+Question 2: Find all instances of a player striking out less than 10 times. Make sure each player has at least 400 at-bats (AB). Order by least to most strikeouts.
+
+```{r}
+query<-"SELECT playerID,yearID,teamID,SO,AB FROM Batting
+WHERE SO<10 and AB>=400
+ORDER BY SO"
+sqldf(query)
+```
+
+##Aggregation
+
+Aggregation allows one to group and condense information in different ways, essentially 'squashing' different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how you specify what should be done to those data sets:
+
+*Summation: sum(colname)
+*Average: avg(colname)
+*Maximum: max(colname)
+*Minimum: min(colname)
+
+####Examples
+
+Question 1: Find the career homerun totals for Babe Ruth.
+
+```{r}
+query<-"SELECT playerID,sum(HR) FROM Batting 
+WHERE playerID='ruthba01'
+GROUP BY playerID"
+sqldf(query)
+```
+
+Question 2: Find career homerun totals for all players but list only those with a total of 600 or more, put in descending order.
+
+```{r}
+query<-"SELECT playerID,sum(HR) FROM Batting
+GROUP BY playerID
+HAVING sum(HR)>=600
+ORDER BY sum(HR) DESC"
+sqldf(query)
+```
+
+Question 3: What players have the highest average per season homerun totals? List only those with averages greater than 30, and order from highest to lowest.
+
+```{r}
+query<-"SELECT playerID,avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg(HR)>30
+ORDER BY avg(HR) DESC"
 sqldf(query)
 ```
 

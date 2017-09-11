@@ -248,8 +248,8 @@ sqldf(query)</code></pre>
 <div id="ordering-data-outputs" class="section level2">
 <h2>Ordering Data Outputs</h2>
 <p>One can also order output. To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.</p>
-<div id="example" class="section level4">
-<h4>Example</h4>
+<div id="examples-1" class="section level4">
+<h4>Examples</h4>
 <p>Question 1: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE HR&gt;50
@@ -292,6 +292,125 @@ sqldf(query)</code></pre>
 ## 34  mayswi01   1955    NY1 51
 ## 35 fieldce01   1990    DET 51
 ## 36 jonesan01   2005    ATL 51</code></pre>
+<p>Question 2: Find all instances of a player striking out less than 10 times. Make sure each player has at least 400 at-bats (AB). Order by least to most strikeouts.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,SO,AB FROM Batting
+WHERE SO&lt;10 and AB&gt;=400
+ORDER BY SO&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID yearID teamID SO  AB
+## 1  doyleja01   1894    NY1  3 422
+## 2  seweljo01   1932    NYA  3 503
+## 3  seweljo01   1925    CLE  4 608
+## 4  seweljo01   1929    CLE  4 578
+## 5  seweljo01   1933    NYA  4 524
+## 6   wardjo01   1893    NY1  5 588
+## 7  holloch01   1922    CHN  5 592
+## 8  mcinnst01   1922    CLE  5 537
+## 9  wanerll01   1936    PIT  5 414
+## 10 wrighge01   1875    BS1  6 408
+## 11 broutda01   1889    BSN  6 485
+## 12 keelewi01   1894    BLN  6 590
+## 13  wardjo01   1894    NY1  6 540
+## 14 quinnjo02   1895    SLN  6 543
+## 15 mcinnst01   1924    BSN  6 581
+## 16 seweljo01   1926    CLE  6 578
+## 17  wardjo01   1889    NY1  7 479
+## 18 crossla01   1893    PHI  7 415
+## 19 quinnjo02   1893    SLN  7 547
+## 20 crossla01   1894    PHI  7 529
+## 21 vaughfa01   1896    CIN  7 433
+## 22 cochrmi01   1927    PHA  7 432
+## 23 seweljo01   1927    CLE  7 569
+## 24 traynpi01   1929    PIT  7 540
+## 25 muelldo01   1956    NY1  7 453
+## 26 connoro01   1885    NY1  8 455
+## 27 glassja01   1887    IN3  8 483
+## 28 glassja01   1890    NY1  8 512
+## 29 donovpa01   1893    PIT  8 499
+## 30 dungasa01   1893    CHN  8 465
+## 31 pinknge01   1893    LS3  8 446
+## 32 brodist01   1894    BLN  8 573
+## 33 quinnjo02   1894    SLN  8 405
+## 34 bierblo01   1895    PIT  8 466
+## 35 crossla01   1895    PHI  8 535
+## 36   hoydu01   1895    CIN  8 429
+## 37 roushed01   1921    CIN  8 418
+## 38 collied01   1923    CHA  8 505
+## 39 collied01   1925    CHA  8 425
+## 40 speaktr01   1927    WS1  8 523
+## 41 cochrmi01   1929    PHA  8 514
+## 42 seweljo01   1931    NYA  8 484
+## 43 wanerll01   1933    PIT  8 500
+## 44 verbaem01   1947    PHI  8 540
+## 45 ansonca01   1883    CHN  9 413
+## 46 broutda01   1887    DTN  9 500
+## 47   hoydu01   1893    WAS  9 564
+## 48 bierblo01   1894    PIT  9 525
+## 49 broutda01   1894    BLN  9 525
+## 50 milledo01   1894    SLN  9 481
+## 51 keelewi01   1896    BLN  9 544
+## 52 mckeaed01   1896    CL4  9 571
+## 53 speaktr01   1918    CLE  9 471
+## 54  dealch01   1921    CHN  9 422
+## 55 mcinnst01   1921    BOS  9 584
+## 56 severha01   1921    SLA  9 472
+## 57  highan01   1926    BSN  9 476
+## 58 summaho01   1926    CLE  9 581
+## 59 seweljo01   1928    CLE  9 588
+## 60  ricesa01   1929    WS1  9 616
+## 61 leachfr01   1931    NY1  9 515
+## 62 busched01   1945    PHA  9 416
+## 63 holmeto01   1945    BSN  9 636
+## 64 boudrlo01   1948    CLE  9 560
+## 65 mitchda01   1952    CLE  9 511</code></pre>
+</div>
+</div>
+<div id="aggregation" class="section level2">
+<h2>Aggregation</h2>
+<div id="examples-2" class="section level4">
+<h4>Examples</h4>
+<p>Question 1: Find the career homerun totals for Babe Ruth.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) FROM Batting 
+WHERE playerID='ruthba01'
+GROUP BY playerID&quot;
+sqldf(query)</code></pre>
+<pre><code>##   playerID sum(HR)
+## 1 ruthba01     714</code></pre>
+<p>Question 2: Find career homerun totals for all players but list only those with a total of 600 or more, put in descending order.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) FROM Batting
+GROUP BY playerID
+HAVING sum(HR)&gt;=600
+ORDER BY sum(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID sum(HR)
+## 1 bondsba01     762
+## 2 aaronha01     755
+## 3  ruthba01     714
+## 4 rodrial01     696
+## 5  mayswi01     660
+## 6 griffke02     630
+## 7 thomeji01     612
+## 8  sosasa01     609</code></pre>
+<p>Question 3: What players have the highest average per season homerun totals.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg(HR)&gt;30
+ORDER BY avg(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID  avg(HR)
+## 1  pujolal01 36.93750
+## 2  bondsba01 34.63636
+## 3  mcgwima01 34.29412
+## 4  kinerra01 33.54545
+## 5  aaronha01 32.82609
+## 6  bryankr01 32.50000
+## 7   ruthba01 32.45455
+## 8   sosasa01 32.05263
+## 9  cabremi01 31.85714
+## 10 belleal01 31.75000
+## 11 rodrial01 31.63636
+## 12 schmimi01 30.44444
+## 13 abreujo02 30.33333</code></pre>
 </div>
 </div>
 
