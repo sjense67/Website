@@ -80,12 +80,17 @@ sqldf(query)
 
 ##Aggregation
 
-Aggregation allows one to group and condense information in different ways, essentially 'squashing' different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how you specify what should be done to those data sets:
+Aggregation allows one to group and condense information in different ways, essentially 'squashing' different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how one would specify what should be done to those data sets:
 
-*Summation: sum(colname)
-*Average: avg(colname)
-*Maximum: max(colname)
-*Minimum: min(colname)
+-Summation: sum(colname)
+
+-Average: avg(colname)
+
+-Maximum: max(colname)
+
+-Minimum: min(colname)
+
+If one wants to continue filtering after they have grouped, they can use the HAVING command, which functions as the filtering WHERE command when used after GROUP BY. ORDER BY can be used in the same way as before, coming at the end of the command list.
 
 ####Examples
 
