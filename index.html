@@ -367,6 +367,8 @@ sqldf(query)</code></pre>
 </div>
 <div id="aggregation" class="section level2">
 <h2>Aggregation</h2>
+<p>Aggregation allows one to group and condense information in different ways, essentially ‘squashing’ different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how you specify what should be done to those data sets:</p>
+<p><em>Summation: sum(colname) </em>Average: avg(colname) <em>Maximum: max(colname) </em>Minimum: min(colname)</p>
 <div id="examples-2" class="section level4">
 <h4>Examples</h4>
 <p>Question 1: Find the career homerun totals for Babe Ruth.</p>
@@ -391,7 +393,7 @@ sqldf(query)</code></pre>
 ## 6 griffke02     630
 ## 7 thomeji01     612
 ## 8  sosasa01     609</code></pre>
-<p>Question 3: What players have the highest average per season homerun totals.</p>
+<p>Question 3: What players have the highest average per season homerun totals? List only those with averages greater than 30, and order from highest to lowest.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,avg(HR) FROM Batting
 GROUP BY playerID
 HAVING avg(HR)&gt;30
