@@ -368,10 +368,12 @@ sqldf(query)</code></pre>
 <div id="aggregation" class="section level2">
 <h2>Aggregation</h2>
 <p>Aggregation allows one to group and condense information in different ways, essentially ‘squashing’ different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how one would specify what should be done to those data sets:</p>
-<p>-Summation: sum(colname)</p>
-<p>-Average: avg(colname)</p>
-<p>-Maximum: max(colname)</p>
-<p>-Minimum: min(colname)</p>
+<ul>
+<li><p>Summation: sum(colname)</p></li>
+<li><p>Average: avg(colname)</p></li>
+<li><p>Maximum: max(colname)</p></li>
+<li><p>Minimum: min(colname)</p></li>
+</ul>
 <p>If one wants to continue filtering after they have grouped, they can use the HAVING command, which functions as the filtering WHERE command when used after GROUP BY. ORDER BY can be used in the same way as before, coming at the end of the command list.</p>
 <div id="examples-2" class="section level4">
 <h4>Examples</h4>
@@ -417,6 +419,115 @@ sqldf(query)</code></pre>
 ## 11 rodrial01 31.63636
 ## 12 schmimi01 30.44444
 ## 13 abreujo02 30.33333</code></pre>
+</div>
+</div>
+<div id="joining" class="section level2">
+<h2>Joining</h2>
+<p>Joining allows tables to be joined together based on common data to increase the data output options. This is done through the INNER JOIN and ON commands. INNER JOIN indicates which tables are being joined together. ON indicates the common data that the tables will be joined by. If the common data appears alone in the code, it will need to either have specified which of the joined tables it is coming from, or replaced by the inforamtion from another table. In the first example, playerID in the SELECT phrase was replaced by nameFIRST and nameLAST to make reading the table easier.</p>
+<div id="examples-3" class="section level4">
+<h4>Examples</h4>
+<p>Question 1: First and last name, along with team, year, and homeruns for Babe Ruth.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,teamID,yearID,HR 
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst nameLast teamID yearID HR
+## 1       Babe     Ruth    BOS   1914  0
+## 2       Babe     Ruth    BOS   1915  4
+## 3       Babe     Ruth    BOS   1916  3
+## 4       Babe     Ruth    BOS   1917  2
+## 5       Babe     Ruth    BOS   1918 11
+## 6       Babe     Ruth    BOS   1919 29
+## 7       Babe     Ruth    NYA   1920 54
+## 8       Babe     Ruth    NYA   1921 59
+## 9       Babe     Ruth    NYA   1922 35
+## 10      Babe     Ruth    NYA   1923 41
+## 11      Babe     Ruth    NYA   1924 46
+## 12      Babe     Ruth    NYA   1925 25
+## 13      Babe     Ruth    NYA   1926 47
+## 14      Babe     Ruth    NYA   1927 60
+## 15      Babe     Ruth    NYA   1928 54
+## 16      Babe     Ruth    NYA   1929 46
+## 17      Babe     Ruth    NYA   1930 49
+## 18      Babe     Ruth    NYA   1931 46
+## 19      Babe     Ruth    NYA   1932 41
+## 20      Babe     Ruth    NYA   1933 34
+## 21      Babe     Ruth    NYA   1934 22
+## 22      Babe     Ruth    BSN   1935  6</code></pre>
+<p>Question 2: Find all instances of players getting more than 50 homeruns starting with the greatest number. Include first and last names, team, year, and home runs.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,teamID,yearID,HR
+FROM Batting INNER JOIN Master
+On Batting.playerID=Master.PlayerID
+WHERE HR&gt;50
+ORDER BY HR DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst  nameLast teamID yearID HR
+## 1      Barry     Bonds    SFN   2001 73
+## 2       Mark   McGwire    SLN   1998 70
+## 3      Sammy      Sosa    CHN   1998 66
+## 4       Mark   McGwire    SLN   1999 65
+## 5      Sammy      Sosa    CHN   2001 64
+## 6      Sammy      Sosa    CHN   1999 63
+## 7      Roger     Maris    NYA   1961 61
+## 8       Babe      Ruth    NYA   1927 60
+## 9       Babe      Ruth    NYA   1921 59
+## 10    Jimmie      Foxx    PHA   1932 58
+## 11      Hank Greenberg    DET   1938 58
+## 12      Ryan    Howard    PHI   2006 58
+## 13      Luis  Gonzalez    ARI   2001 57
+## 14      Alex Rodriguez    TEX   2002 57
+## 15      Hack    Wilson    CHN   1930 56
+## 16       Ken   Griffey    SEA   1997 56
+## 17       Ken   Griffey    SEA   1998 56
+## 18      Babe      Ruth    NYA   1920 54
+## 19      Babe      Ruth    NYA   1928 54
+## 20     Ralph     Kiner    PIT   1949 54
+## 21    Mickey    Mantle    NYA   1961 54
+## 22     David     Ortiz    BOS   2006 54
+## 23      Alex Rodriguez    NYA   2007 54
+## 24      Jose  Bautista    TOR   2010 54
+## 25     Chris     Davis    BAL   2013 53
+## 26    Mickey    Mantle    NYA   1956 52
+## 27    Willie      Mays    SFN   1965 52
+## 28    George    Foster    CIN   1977 52
+## 29      Mark   McGwire    OAK   1996 52
+## 30      Alex Rodriguez    TEX   2001 52
+## 31       Jim     Thome    CLE   2002 52
+## 32     Ralph     Kiner    PIT   1947 51
+## 33    Johnny      Mize    NY1   1947 51
+## 34    Willie      Mays    NY1   1955 51
+## 35     Cecil   Fielder    DET   1990 51
+## 36    Andruw     Jones    ATL   2005 51</code></pre>
+<p>Question 3: Find Babe Ruth’s homeruns by season, with the team name displayed.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,name,Batting.yearID,Batting.HR
+FROM Batting INNER JOIN Teams
+ON Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID             name yearID HR
+## 1  ruthba01   Boston Red Sox   1914  0
+## 2  ruthba01   Boston Red Sox   1915  4
+## 3  ruthba01   Boston Red Sox   1916  3
+## 4  ruthba01   Boston Red Sox   1917  2
+## 5  ruthba01   Boston Red Sox   1918 11
+## 6  ruthba01   Boston Red Sox   1919 29
+## 7  ruthba01 New York Yankees   1920 54
+## 8  ruthba01 New York Yankees   1921 59
+## 9  ruthba01 New York Yankees   1922 35
+## 10 ruthba01 New York Yankees   1923 41
+## 11 ruthba01 New York Yankees   1924 46
+## 12 ruthba01 New York Yankees   1925 25
+## 13 ruthba01 New York Yankees   1926 47
+## 14 ruthba01 New York Yankees   1927 60
+## 15 ruthba01 New York Yankees   1928 54
+## 16 ruthba01 New York Yankees   1929 46
+## 17 ruthba01 New York Yankees   1930 49
+## 18 ruthba01 New York Yankees   1931 46
+## 19 ruthba01 New York Yankees   1932 41
+## 20 ruthba01 New York Yankees   1933 34
+## 21 ruthba01 New York Yankees   1934 22
+## 22 ruthba01    Boston Braves   1935  6</code></pre>
 </div>
 </div>
 

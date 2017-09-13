@@ -82,13 +82,13 @@ sqldf(query)
 
 Aggregation allows one to group and condense information in different ways, essentially 'squashing' different peces of data together. This is done by using the GROUP BY command. When using GROUP BY, one must then specify how the other columns asked for should be grouped. Should they be averaged, should they be added, or does one only want to see the minimum or maximum? These modifiers are placed on the other column names.This is how one would specify what should be done to those data sets:
 
--Summation: sum(colname)
+* Summation: sum(colname)
 
--Average: avg(colname)
+* Average: avg(colname)
 
--Maximum: max(colname)
+* Maximum: max(colname)
 
--Minimum: min(colname)
+* Minimum: min(colname)
 
 If one wants to continue filtering after they have grouped, they can use the HAVING command, which functions as the filtering WHERE command when used after GROUP BY. ORDER BY can be used in the same way as before, coming at the end of the command list.
 
@@ -120,6 +120,43 @@ query<-"SELECT playerID,avg(HR) FROM Batting
 GROUP BY playerID
 HAVING avg(HR)>30
 ORDER BY avg(HR) DESC"
+sqldf(query)
+```
+
+##Joining
+
+Joining allows tables to be joined together based on common data to increase the data output options. This is done through the INNER JOIN and ON commands. INNER JOIN indicates which tables are being joined together. ON indicates the common data that the tables will be joined by. If the common data appears alone in the code, it will need to either have specified which of the joined tables it is coming from, or replaced by the inforamtion from another table. In the first example, playerID in the SELECT phrase was replaced by nameFIRST and nameLAST to make reading the table easier.
+
+####Examples
+
+Question 1: First and last name, along with team, year, and homeruns for Babe Ruth. 
+
+```{r}
+query<-"SELECT nameFIRST,nameLAST,teamID,yearID,HR 
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'"
+sqldf(query)
+```
+
+Question 2: Find all instances of players getting more than 50 homeruns starting with the greatest number. Include first and last names, team, year, and home runs.
+
+```{r}
+query<-"SELECT nameFIRST,nameLAST,teamID,yearID,HR
+FROM Batting INNER JOIN Master
+On Batting.playerID=Master.PlayerID
+WHERE HR>50
+ORDER BY HR DESC"
+sqldf(query)
+```
+
+Question 3: Find Babe Ruth's homeruns by season, with the team name displayed.
+
+```{r}
+query<-"SELECT playerID,name,Batting.yearID,Batting.HR
+FROM Batting INNER JOIN Teams
+ON Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'"
 sqldf(query)
 ```
 
