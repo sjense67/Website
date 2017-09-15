@@ -157,8 +157,8 @@ sqldf(query)</code></pre>
 ## 24 thomamy01    NYA   1927  0
 ## 25  weraju01    NYA   1927  1</code></pre>
 <p>One can also get more selective with the data, using the same filters. Following are some more specific questions within the Batting table of the Lahman database, the queries used to find the answers, and the answers themselves.</p>
-<div id="examples" class="section level4">
-<h4>Examples</h4>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
 <p>Question 1: Find all instances where Yankees have hit 40 or more home runs.</p>
 <p>For this question, one will not only want to see the number of homeruns and the team, but most likely the player and the year as well. Additionally, instead of using an equals sign in the WHERE clause, one can use greater or less than signs as well to narrow or broaden searches.</p>
 <p>Here is the query line used to find the answer to Question 1.</p>
@@ -248,8 +248,8 @@ sqldf(query)</code></pre>
 <div id="ordering-data-outputs" class="section level2">
 <h2>Ordering Data Outputs</h2>
 <p>One can also order output. To order the information, a ORDER BY clause is used. This will default to ascending order (smallest to largest). To organize in descending order, the DESC command will be placed after the ORDER BY command.</p>
-<div id="examples-1" class="section level4">
-<h4>Examples</h4>
+<div id="examples-1" class="section level3">
+<h3>Examples</h3>
 <p>Question 1: Find every instance of a player hitting more than 50 homeruns, ordered from highest to lowest homerun total.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE HR&gt;50
@@ -375,8 +375,8 @@ sqldf(query)</code></pre>
 <li><p>Minimum: min(colname)</p></li>
 </ul>
 <p>If one wants to continue filtering after they have grouped, they can use the HAVING command, which functions as the filtering WHERE command when used after GROUP BY. ORDER BY can be used in the same way as before, coming at the end of the command list.</p>
-<div id="examples-2" class="section level4">
-<h4>Examples</h4>
+<div id="examples-2" class="section level3">
+<h3>Examples</h3>
 <p>Question 1: Find the career homerun totals for Babe Ruth.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) FROM Batting 
 WHERE playerID='ruthba01'
@@ -424,8 +424,8 @@ sqldf(query)</code></pre>
 <div id="joining" class="section level2">
 <h2>Joining</h2>
 <p>Joining allows tables to be joined together based on common data to increase the data output options. This is done through the INNER JOIN and ON commands. INNER JOIN indicates which tables are being joined together. ON indicates the common data that the tables will be joined by. If the common data appears alone in the code, it will need to either have specified which of the joined tables it is coming from, or replaced by the inforamtion from another table. In the first example, playerID in the SELECT phrase was replaced by nameFIRST and nameLAST to make reading the table easier.</p>
-<div id="examples-3" class="section level4">
-<h4>Examples</h4>
+<div id="examples-3" class="section level3">
+<h3>Examples</h3>
 <p>Question 1: First and last name, along with team, year, and homeruns for Babe Ruth.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,teamID,yearID,HR 
 FROM Batting INNER JOIN Master
@@ -558,7 +558,40 @@ sqldf(query)</code></pre>
 ## 20      Babe     Ruth New York Yankees   1933 34
 ## 21      Babe     Ruth New York Yankees   1934 22
 ## 22      Babe     Ruth    Boston Braves   1935  6</code></pre>
-<p>Question 5:</p>
+<p>Question 5: Find career homerun totals for players who have at least 600 homeruns. Display from the highest amount to the lowest, with the first and last names.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,sum(HR)
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+GROUP BY Batting.playerID
+HAVING sum(HR)&gt;=600
+ORDER BY sum(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##   nameFirst  nameLast sum(HR)
+## 1     Barry     Bonds     762
+## 2      Hank     Aaron     755
+## 3      Babe      Ruth     714
+## 4      Alex Rodriguez     696
+## 5    Willie      Mays     660
+## 6       Ken   Griffey     630
+## 7       Jim     Thome     612
+## 8     Sammy      Sosa     609</code></pre>
+<p>Question 6: List all players, first and last name, with the first name of Bob who averaged more than one million dollars salary over their career.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,avg(salary)
+FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+GROUP BY Salaries.playerID
+HAVING nameFIRST='Bob' and avg(salary)&gt;1000000
+ORDER BY avg(salary) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##   nameFirst  nameLast avg(salary)
+## 1       Bob   Wickman     2635813
+## 2       Bob     Welch     1930417
+## 3       Bob     Howry     1804583
+## 4       Bob    Horner     1416667
+## 5       Bob Tewksbury     1288182
+## 6       Bob   Stanley     1067500
+## 7       Bob     Boone     1047580
+## 8       Bob     Ojeda     1035926</code></pre>
 </div>
 </div>
 
