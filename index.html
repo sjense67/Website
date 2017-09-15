@@ -458,7 +458,7 @@ sqldf(query)</code></pre>
 <p>Question 2: Find all instances of players getting more than 50 homeruns starting with the greatest number. Include first and last names, team, year, and home runs.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,teamID,yearID,HR
 FROM Batting INNER JOIN Master
-On Batting.playerID=Master.PlayerID
+On Batting.playerID=Master.playerID
 WHERE HR&gt;50
 ORDER BY HR DESC&quot;
 sqldf(query)</code></pre>
@@ -528,6 +528,37 @@ sqldf(query)</code></pre>
 ## 20 ruthba01 New York Yankees   1933 34
 ## 21 ruthba01 New York Yankees   1934 22
 ## 22 ruthba01    Boston Braves   1935  6</code></pre>
+<p>Question 4: Find Babe Ruth’s homerun totals, with first and last name and the full team name displayed.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFIRST,nameLAST,name,Batting.yearID,Batting.HR 
+FROM (Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID) INNER JOIN Teams 
+ON Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
+WHERE Batting.playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst nameLast             name yearID HR
+## 1       Babe     Ruth   Boston Red Sox   1914  0
+## 2       Babe     Ruth   Boston Red Sox   1915  4
+## 3       Babe     Ruth   Boston Red Sox   1916  3
+## 4       Babe     Ruth   Boston Red Sox   1917  2
+## 5       Babe     Ruth   Boston Red Sox   1918 11
+## 6       Babe     Ruth   Boston Red Sox   1919 29
+## 7       Babe     Ruth New York Yankees   1920 54
+## 8       Babe     Ruth New York Yankees   1921 59
+## 9       Babe     Ruth New York Yankees   1922 35
+## 10      Babe     Ruth New York Yankees   1923 41
+## 11      Babe     Ruth New York Yankees   1924 46
+## 12      Babe     Ruth New York Yankees   1925 25
+## 13      Babe     Ruth New York Yankees   1926 47
+## 14      Babe     Ruth New York Yankees   1927 60
+## 15      Babe     Ruth New York Yankees   1928 54
+## 16      Babe     Ruth New York Yankees   1929 46
+## 17      Babe     Ruth New York Yankees   1930 49
+## 18      Babe     Ruth New York Yankees   1931 46
+## 19      Babe     Ruth New York Yankees   1932 41
+## 20      Babe     Ruth New York Yankees   1933 34
+## 21      Babe     Ruth New York Yankees   1934 22
+## 22      Babe     Ruth    Boston Braves   1935  6</code></pre>
+<p>Question 5:</p>
 </div>
 </div>
 
