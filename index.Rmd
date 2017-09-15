@@ -183,6 +183,15 @@ ORDER BY sum(HR) DESC"
 sqldf(query)
 ```
 
+Question 6: List all players, first and last name, with the first name of Bob who averaged more than one million dollars salary over their career.
 
-
+```{r}
+query<-"SELECT nameFIRST,nameLAST,avg(salary)
+FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+GROUP BY Salaries.playerID
+HAVING nameFIRST='Bob' and avg(salary)>1000000
+ORDER BY avg(salary) DESC"
+sqldf(query)
+```
 
